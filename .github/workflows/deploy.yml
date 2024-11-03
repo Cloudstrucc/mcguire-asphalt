@@ -24,9 +24,6 @@ jobs:
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
-      - name: Test SSH Connection
-        run: ssh -v fredp614@${{ secrets.SERVER_IP }} "echo 'SSH connection successful'"
-
       - name: Deploy to server
         run: |
-          ssh fredp614@${{ secrets.SERVER_IP }} "bash /home/fredp614/asphalt-app/scripts/deploy.sh"
+          ssh fredp614@${{ secrets.SERVER_IP }} "export XDG_RUNTIME_DIR=/run/user/$(id -u) && bash /home/fredp614/deploy.sh"

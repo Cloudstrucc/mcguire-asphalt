@@ -20,7 +20,7 @@ log_message "Starting deployment"
 
 # Navigate to app directory
 cd "$APP_DIR"
-
+chmod 755 /home/fredp614/deploy.sh
 # Pull latest changes
 log_message "Pulling latest changes"
 git pull origin main
