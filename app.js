@@ -7,7 +7,7 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Updated CSP configuration to allow Google Maps and CDN resources
+// //Updated CSP configuration to allow Google Maps and CDN resources
 app.use(helmet({
     contentSecurityPolicy: {
         useDefaults: false,
