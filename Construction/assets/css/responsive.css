@@ -1,0 +1,88 @@
+@media screen and (max-width: 1500px) {
+	.about-section {
+		background: #fff !important;
+		background-image: none;
+}
+.banner-section .col-md-7 {
+    padding: 260px 0px 200px;
+    margin-right: 0px !important;
+}
+.services-section .col-md-5{
+	margin-left: -100px !important;
+}
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+	button.navigation-toggler {
+		display: block;
+	}
+	.banner .banner-form {
+		display: none;
+	}
+	img{
+		width: 100%;
+	}
+	.navbar-toggle .icon-bar{
+		color: #000 !important;
+		background: #000;
+	}
+
+}
+
+@media only screen and (max-width: 767px) {
+	.preloader{
+		display: none !important;
+	}
+	button.navigation-toggler {
+		display: block;
+	}
+	.purchase-now .items {
+	    line-height: 45px !important;
+		}
+
+	#bottom-bar .container p {
+		line-height: 37px;
+	}
+	footer .container .col-lg-12 button {
+		font-size: 17px;
+		padding: 0px 15px;
+	}
+	img {
+		width: 100%;
+		height: auto;
+	}
+	.navbar-toggle .icon-bar{
+		color: #000 !important;
+		background: #000;
+	}
+	.navbar-toggle {
+	 padding: 40px 0px;
+	}
+	#bs-navbar{
+		width: 100% !important;
+	}
+
+}
+
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+	.preloader{
+		display: none !important;
+	}
+	footer .widget img.positioned {
+		margin-top: 10px;
+	}
+	img{
+		width: 100%;
+		height: auto;
+	}
+	footer .widget img.positioned {
+		margin-top: 0;
+		position: relative;
+		top: 53px;
+	}
+
+
+}
