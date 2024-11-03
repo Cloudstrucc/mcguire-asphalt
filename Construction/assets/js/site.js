@@ -1,227 +1,204 @@
-(function ($) {
-	"use strict";
-/* Google Map  */
-function gMap () {
-if ($('#map').length) {
+(function($) {
+    "use strict";
 
+    // Preloader
+    $(window).on('load', function() {
+        $('.preloader').fadeOut('slow');
+    });
 
-	            var map;
-	            map = new GMaps({
-	                div: '#map',
-	                scrollwheel: false,
-	                lat: -37.812802,
-	                lng: 144.956981,
-	            });
-	            map.addMarker({
-	                lat: -37.812802,
-	                lng: 144.956981,
-	                title: 'Envato HeadQuarter',
-	            });
-
-
-}
-}
-
-/* testimonial caroulse */
-function testimonial () {
-	if ($('#test-slider').length) {
-
-		$("#test-slider").owlCarousel({
-
-      navigation : true, // Show next and prev buttons
-      slideSpeed : 300,
-      paginationSpeed : 400,
-      singleItem:true,
-	  navigation:false,
-	  pagination:true
-
-
-  });
-    };
-	}
-
-
-/* satisfied client */
-function logo () {
-	if ($('#logo').length) {
-
-
-$("#logo").owlCarousel({
-
-navigation : true, // Show next and prev buttons
-slideSpeed : 300,
-paginationSpeed : 400,
-items : 5,
-navigation:true,
-navigationText: [
-"<i class='fa fa-chevron-left'></i>",
-"<i class='fa fa-chevron-right'></i>"
-],
-pagination:false
-
-
-});
-
-
-	    };
-		};
-
-/* affix the navbar after scroll below header */
-function navStick () {
-  if($('#nav').length){
-	/*	$('#nav').affix({
-		      offset: {
-		        top: 90
-		      }
-		});
-/* highlight the top nav as scrolling occurs */
-$('body').scrollspy({ target: '#nav', offset: 90})
-
-/* smooth scrolling for scroll to top */
-$('.scroll-top').click(function(){
-  $('body,html').animate({scrollTop:100},1000);
-
-})
-
-$(window).scroll(function () {
-        if ($(window).scrollTop() >= 1) {
-            $(".navbar").addClass("affix");
-        }else {
-            $(".navbar").removeClass("affix");
+    // Navigation
+    $(window).scroll(function() {
+        if ($(".navbar").offset().top > 50) {
+            $(".navbar-fixed-top").addClass("top-nav-collapse");
+        } else {
+            $(".navbar-fixed-top").removeClass("top-nav-collapse");
         }
     });
 
-/* smooth scrolling for nav sections */
-$('#nav .navbar-nav li>a').click(function(){
-  var link = $(this).attr('href');
-  var posi = $(link).offset().top;
-  $('body,html').animate({scrollTop:posi},700);
-
-});
-};
-};
-
-
-
-
-/* content carousel  */
-function fitnessCarosule () {
-if ($('#fitness-coach').length) {
-  $("#fitness-coach").owlCarousel({
-
-      autoPlay: 3000, //Set AutoPlay to 3 seconds
-
-      items : 2,
-      itemsDesktop : [1170,3],
-      itemsDesktopSmall : [979,2]
-
-  });
-}
-}
-
-
-/* number counter effect */
-function counT () {
-if ($('.count').length) {
-
-$('.count').each(function() {
-  $(this).prop('Counter', 0).animate({
-    Counter: $(this).text()
-  }, {
-    duration: 4000,
-    easing: 'swing',
-    step: function(now) {
-      $(this).text(Math.ceil(now));
-    }
-  });
-});
-}
-}
-
- // wow activator
-    function wowActivator () {
-    	new WOW().init();
-    }
-// Contact Form
-function contactFormValidation () {
-if ($('#form').length) {
-$('#form').validate({
-        rules: {
-            name: {
-                required: true,
-                minlength: 2
-            },
-            email: {
-                required: true,
-                email: true
-            },
-            mobile: {
-                required: true
-            },
-            adult: {
-                required: true,
+    // Smooth Scrolling
+    $('a[href*="#"]:not([href="#"])').click(function() {
+        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+            var target = $(this.hash);
+            target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+            if (target.length) {
+                $('html, body').animate({
+                    scrollTop: target.offset().top - 60
+                }, 1000);
+                return false;
             }
-        },
-        messages: {
-            name: {
-                required: "plese enter your name",
-            },
-            email: {
-                required: "plese enter your email"
-            },
-            mobile: {
-                required: "please enter your mobile number",
-                minlength: "10"
-            }
+        }
+    });
 
-        },
-        submitHandler: function(form) {
-            $('#form').ajaxSubmit({
-                type:"POST",
-                data: $('#form').serialize(),
-                url:"process.php",
-                success: function() {
-                    //$('#form :input').attr('disabled', 'disabled');
-					//this.reset();
-                    $('#form').fadeTo( "slow", 1, function() {
-                       // $(this).find(':input').attr('disabled', 'disabled');
-                       // $(this).find('label').css('cursor','default');
-					   this.reset();
-                        $('#success').fadeIn();
-                    });
-                },
-                error: function() {
-                    $('#form').fadeTo( "slow", 1, function() {
-                        $('#error').fadeIn();
-                    });
-                }
+    // Initialize other features
+    $(document).ready(function() {
+        // Initialize WOW.js
+        new WOW().init();
+        
+        // Initialize Owl Carousel for logo section
+        if ($("#logo").length) {
+            $("#logo").owlCarousel({
+                autoPlay: true,
+                pagination: false,
+                items: 6,
+                itemsDesktop: [1199, 4],
+                itemsDesktopSmall: [979, 3],
+                itemsTablet: [768, 3],
+                itemsMobile: [479, 2]
             });
         }
+
+        // Form validation
+        $('#form').on('submit', function(e) {
+            e.preventDefault();
+            var error = false;
+            var name = $('#name').val();
+            var email = $('#email').val();
+            var subject = $('#subject').val();
+            var message = $('#message').val();
+
+            if (name.length == 0) {
+                error = true;
+                $('#name').css("border-color", "#D8000C");
+            } else {
+                $('#name').css("border-color", "#666");
+            }
+            if (!validateEmail(email)) {
+                error = true;
+                $('#email').css("border-color", "#D8000C");
+            } else {
+                $('#email').css("border-color", "#666");
+            }
+            if (subject.length == 0) {
+                error = true;
+                $('#subject').css("border-color", "#D8000C");
+            } else {
+                $('#subject').css("border-color", "#666");
+            }
+            if (message.length == 0) {
+                error = true;
+                $('#message').css("border-color", "#D8000C");
+            } else {
+                $('#message').css("border-color", "#666");
+            }
+
+            if (!error) {
+                $('#error').fadeOut(500);
+                // Handle form submission
+                $('#success').fadeIn(500).css("display", "block");
+                $('#form')[0].reset();
+            } else {
+                $('#error').fadeIn(500);
+                $('#success').fadeOut(500);
+            }
+
+            return false;
+        });
     });
-}
-}
-//Hide Loading Box (Preloader)
-	function handlePreloader() {
-		if($('.preloader').length){
-			$('.preloader').delay(1000).fadeOut(1000);
-		}
-	}
-// Dom Ready Function
-	$(document).on('ready', function () {
-		// add your functions
-		gMap();
-		fitnessCarosule();
-		counT();
-		wowActivator();
-		contactFormValidation();
-		handlePreloader();
-		navStick();
-		testimonial ();
-		logo ();
-	});
-	// window on load functino
-	$(window).on('load', function () {
-		// add your functions
-	});
+
+    function validateEmail(email) {
+        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    }
 
 })(jQuery);
+
+// Google Maps Integration - Define globally
+function initMap() {
+    // Wait for Google Maps to be fully loaded
+    if (typeof google === 'undefined') {
+        setTimeout(initMap, 1000);
+        return;
+    }
+
+    if (document.getElementById('map')) {
+        const location = {
+            lat: 45.3188867,
+            lng: -75.761676
+        };
+
+        const mapOptions = {
+            zoom: 15,
+            center: location,
+            scrollwheel: false,
+            mapTypeControl: true,
+            streetViewControl: true,
+            styles: [
+                {
+                    "featureType": "administrative",
+                    "elementType": "labels.text.fill",
+                    "stylers": [{"color": "#444444"}]
+                },
+                {
+                    "featureType": "landscape",
+                    "elementType": "all",
+                    "stylers": [{"color": "#f2f2f2"}]
+                },
+                {
+                    "featureType": "poi",
+                    "elementType": "all",
+                    "stylers": [{"visibility": "off"}]
+                },
+                {
+                    "featureType": "road",
+                    "elementType": "all",
+                    "stylers": [{"saturation": -100}, {"lightness": 45}]
+                },
+                {
+                    "featureType": "road.highway",
+                    "elementType": "all",
+                    "stylers": [{"visibility": "simplified"}]
+                },
+                {
+                    "featureType": "road.arterial",
+                    "elementType": "labels.icon",
+                    "stylers": [{"visibility": "off"}]
+                },
+                {
+                    "featureType": "transit",
+                    "elementType": "all",
+                    "stylers": [{"visibility": "off"}]
+                },
+                {
+                    "featureType": "water",
+                    "elementType": "all",
+                    "stylers": [{"color": "#46bcec"}, {"visibility": "on"}]
+                }
+            ]
+        };
+
+        try {
+            // Create the map
+            const map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+            // Add marker
+            const marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                title: 'McGuire Asphalt',
+                animation: google.maps.Animation.DROP
+            });
+
+            // Add info window
+            const infowindow = new google.maps.InfoWindow({
+                content: `
+                    <div style="width:250px">
+                        <strong>McGuire Asphalt</strong><br>
+                        Professional Paving Services<br>
+                        Ottawa, ON<br>
+                        <a href="tel:+16135550123">(613) 555-0123</a>
+                    </div>`
+            });
+
+            // Open info window by default
+            infowindow.open(map, marker);
+
+            // Add click event to marker
+            marker.addListener('click', () => {
+                infowindow.open(map, marker);
+            });
+
+        } catch (e) {
+            console.error('Error initializing map:', e);
+        }
+    }
+}
