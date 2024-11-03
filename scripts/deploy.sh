@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# /var/www/asphalt/scripts/deploy.sh
+# /home/fredp614/deploy.sh
 
 # Exit on any error
 set -e
@@ -11,7 +11,8 @@ LOG_FILE="/var/log/asphalt-deploy.log"
 
 # Function to log messages
 log_message() {
-    echo "$(date '+%Y-%m-%d %H:%M:%S'): $1" | tee -a "$LOG_FILE"
+    echo "$(date '+%Y-%m-%d %H:%M:%S'): $1"
+    echo "$(date '+%Y-%m-%d %H:%M:%S'): $1" >> "$LOG_FILE"
 }
 
 # Start deployment
@@ -26,23 +27,23 @@ git pull origin main
 
 # Install dependencies
 log_message "Installing dependencies"
-npm install --production
+npm install --omit=dev
 
 # Update permissions if needed
 log_message "Updating permissions"
-sudo chown -R fredp614:fredp614 .
-sudo chmod -R 755 .
+sudo /bin/chown -R fredp614:fredp614 /home/fredp614/asphalt-app
+sudo /bin/chmod -R 755 /home/fredp614/asphalt-app
 
 # Restart the application
 log_message "Restarting application"
-sudo systemctl restart asphalt
+sudo /bin/systemctl restart asphalt
 
 # Test and reload Nginx
 log_message "Testing and reloading Nginx"
-sudo nginx -t && sudo systemctl reload nginx
+sudo /usr/sbin/nginx -t && sudo /bin/systemctl reload nginx
 
 # Clean up
 log_message "Cleaning up"
-sudo rm -rf /tmp/mcguire-asphalt
+rm -rf /tmp/mcguire-asphalt
 
 log_message "Deployment completed successfully"
