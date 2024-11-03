@@ -45,7 +45,7 @@ if [ ! -d "$TEMPLATE_DIR" ]; then
     mkdir -p "$TEMPLATE_DIR"
 fi
 
-# Copy template files
+# Copy template files for web app
 print_status "Copying template files..."
 cp -r $TEMP_DIR/Construction/* "$TEMPLATE_DIR/"
 
