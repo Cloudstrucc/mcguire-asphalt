@@ -1,236 +1,135 @@
-# McGuire Asphalt Website Deployment Guide
+# McGuire Asphalt Website Project
 
-This guide covers the complete process of setting up an Ubuntu server and deploying the McGuire Asphalt website, from initial server configuration to final deployment.
+## Overview
+This project is a Node.js Express application serving a professional website for McGuire Asphalt, featuring a custom Bootstrap template with Google Maps integration.
 
-## Table of Contents
+## Prerequisites
+- Ubuntu Server (20.04 LTS or newer)
+- Node.js v18+
+- Nginx
+- Domain name configured (asphalt.cloudstrucc.com)
 
-- [Initial Server Setup](#initial-server-setup)
-- [Web Server Configuration](#web-server-configuration)
-- [Website Deployment](#website-deployment)
-- [Maintenance and Monitoring](#maintenance-and-monitoring)
-- [Troubleshooting](#troubleshooting)
+## Server Setup
 
-## Initial Server Setup
-
-### 1. Basic Server Configuration
-
-First, run the server setup script to configure basic security and requirements:
-
+### 1. Initial Server Configuration
 ```bash
-# Create the setup script
+# Create and run the server setup script
 sudo nano server-setup.sh
-
-# Make it executable
 sudo chmod +x server-setup.sh
-
-# Run the script
 sudo ./server-setup.sh
 ```
 
 The script will:
-
 - Create a new sudo user
 - Configure SSH security
 - Set up firewall rules
 - Install Nginx
 - Configure SSL with Let's Encrypt
 
-When prompted, provide:
+### 2. Website Deployment
 
-- New username
-- Domain name (asphalt.cloudstrucc.com)
-- Whether to include www subdomain
-
-### 2. Update System Packages
-
+#### Create Application Directory
 ```bash
-sudo apt-get update
-sudo apt-get upgrade -y
+sudo mkdir -p /var/www/asphalt
+sudo chown -R fredp614:fredp614 /var/www/asphalt
+sudo chmod -R 755 /var/www/asphalt
 ```
 
-### 3. Install Required Software
-
+#### Clone Repository and Deploy
 ```bash
-# Install Git
-sudo apt-get install git -y
-
-# Install Node.js and npm
-curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-sudo apt-get install nodejs -y
+cd /var/www/asphalt
+git clone https://github.com/Cloudstrucc/mcguire-asphalt.git .
 ```
 
-## Web Server Configuration
+#### Set Up Google Maps
+1. Set up Google Maps API:
+   - Visit Google Cloud Console
+   - Create/Select project
+   - Enable Maps JavaScript API
+   - Create API key with restrictions
+   - Add domain restrictions for asphalt.cloudstrucc.com
 
-### 1. Set Up Website Directory
+2. Current API Key: `AIzaSyA2HJk1J8qN94Tvq1hH347LSMA1KZykNtU`
 
+### 3. Content Updates
+
+#### Update Images
 ```bash
-# Create application directory
-sudo mkdir -p /home/fredp614/asphalt-app
+# Navigate to images directory
+cd /var/www/asphalt/Construction/assets/img
 
-# Set ownership
-sudo chown fredp614:fredp614 /home/fredp614/asphalt-app
+# Download banner images
+sudo wget https://images.unsplash.com/photo-1589939705384-5185137a7f0f -O asphalt-worker.jpg
+sudo wget https://images.unsplash.com/photo-1518709766631-a6a7f45921c3 -O asphalt-hero.jpg
 
 # Set permissions
-sudo chmod 755 /home/fredp614/asphalt-app
+sudo chmod 644 asphalt-worker.jpg asphalt-hero.jpg
+sudo chown www-data:www-data asphalt-worker.jpg asphalt-hero.jpg
 ```
 
-### 2. Configure Nginx
-
-The server setup script will handle this, but you can verify the configuration:
-
+#### Update CSS
 ```bash
-sudo nginx -t
-sudo systemctl status nginx
+# Edit main CSS file
+sudo nano /var/www/asphalt/Construction/assets/css/main.css
+```
+Add banner section styles at the end of the file for:
+- Hero image configuration
+- Typography updates
+- Responsive design
+- Button styling
+
+## Application Structure
+```
+/var/www/asphalt/
+├── app.js                 # Express application
+├── package.json          # Node.js dependencies
+├── Construction/         # Static website files
+│   ├── index.html       # Main HTML file
+│   ├── assets/
+│   │   ├── css/        # CSS files
+│   │   ├── js/         # JavaScript files
+│   │   └── img/        # Image files
 ```
 
-## Website Deployment
+## Key Files
+- `app.js`: Express application with CSP configuration
+- `Construction/index.html`: Main website template
+- `Construction/assets/js/site.js`: Custom JavaScript including Google Maps
+- `Construction/assets/css/main.css`: Custom styling
 
-### 1. Create Deployment Script
+## Running the Application
 
+### Start the Application
 ```bash
-# Create deployment script
-sudo nano ~/deploy-asphalt.sh
-
-# Make it executable
-sudo chmod +x ~/deploy-asphalt.sh
-```
-
-### 2. Run Deployment
-
-```bash
-sudo ./deploy-asphalt.sh
-```
-
-The deployment script will:
-
-- Clone the GitHub repository (https://github.com/Cloudstrucc/mcguire-asphalt)
-- Set up the Node.js application
-- Configure the systemd service
-- Set up Nginx reverse proxy
-- Start the application
-
-### 3. Verify Deployment
-
-```bash
-# Check Node.js application status
-sudo systemctl status asphalt
-
-# Check Nginx status
-sudo systemctl status nginx
-
-# View application logs
-sudo journalctl -u asphalt -f
-```
-
-## Directory Structure
-
-After deployment, your files will be organized as follows:
-
-/home/fredp614/asphalt-app/
-├── app.js
-├── package.json
-├── package-lock.json
-├── node_modules/
-└── Construction/
-    ├── index.html
-    ├── assets/
-    └── ...
-
-## Maintenance and Monitoring
-
-### Updating the Website
-
-To update the website with new changes:
-
-1. Push changes to the GitHub repository
-2. Run the deployment script again:
-
-```bash
-sudo ./deploy-asphalt.sh
-```
-
-### Monitoring
-
-Monitor the application using these commands:
-
-```bash
-# View real-time application logs
-sudo journalctl -u asphalt -f
-
-# Check application status
-sudo systemctl status asphalt
-
-# Check Nginx status
-sudo systemctl status nginx
-```
-
-### Common Commands
-
-```bash
-# Restart the application
+# Start/restart the application
 sudo systemctl restart asphalt
 
-# Restart Nginx
-sudo systemctl restart nginx
-
-# View recent logs
-sudo journalctl -u asphalt --since "1 hour ago"
+# Check status
+sudo systemctl status asphalt
 ```
 
-## Troubleshooting
-
-### Permission Issues
-
-If you encounter permission denied errors:
-
+### View Logs
 ```bash
-# Check directory ownership
-ls -la /home/fredp614/asphalt-app
-
-# Fix permissions if needed
-sudo chown -R fredp614:fredp614 /home/fredp614/asphalt-app
-sudo chmod -R 755 /home/fredp614/asphalt-app
-```
-
-### Application Won't Start
-
-1. Check logs for errors:
-
-```bash
+# View application logs
 sudo journalctl -u asphalt -f
-```
 
-2. Verify Node.js installation:
-
-```bash
-node --version
-npm --version
-```
-
-3. Check if port 3000 is in use:
-
-```bash
-sudo lsof -i :3000
-```
-
-### Nginx Issues
-
-1. Test configuration:
-
-```bash
-sudo nginx -t
-```
-
-2. Check error logs:
-
-```bash
+# View Nginx logs
+sudo tail -f /var/log/nginx/access.log
 sudo tail -f /var/log/nginx/error.log
 ```
 
-### SSL Certificate Issues
+## Maintenance
 
-If SSL certificate isn't working:
+### Update Website Content
+1. Push changes to GitHub
+2. Pull changes on server:
+```bash
+cd /var/www/asphalt
+git pull origin main
+sudo systemctl restart asphalt
+```
 
+### SSL Certificate
 ```bash
 # Check certificate status
 sudo certbot certificates
@@ -239,52 +138,52 @@ sudo certbot certificates
 sudo certbot renew --dry-run
 ```
 
-## Security Notes
+## Troubleshooting
 
-1. Regular Updates
-
+### Common Issues
+1. Permission Issues:
 ```bash
-# Update system packages
-sudo apt-get update && sudo apt-get upgrade
-
-# Update npm packages
-cd /home/fredp614/asphalt-app
-npm update
+sudo chown -R fredp614:fredp614 /var/www/asphalt
+sudo chmod -R 755 /var/www/asphalt
 ```
 
-2. Monitor Logs
-
+2. Nginx Configuration:
 ```bash
-# Check authentication logs
-sudo tail -f /var/log/auth.log
-
-# Check Nginx access logs
-sudo tail -f /var/log/nginx/access.log
+sudo nginx -t
+sudo systemctl reload nginx
 ```
+
+3. Application Not Starting:
+```bash
+sudo systemctl status asphalt
+sudo journalctl -u asphalt -f
+```
+
+### Security Notes
+- Keep Node.js and npm packages updated
+- Regularly update SSL certificates
+- Monitor server logs for unusual activity
+- Keep Google Maps API key restricted
+- Regular system updates
+
+## Development
+
+### Local Development
+1. Clone repository
+2. Install dependencies: `npm install`
+3. Start development server: `npm start`
+
+### Deployment
+1. Push changes to GitHub
+2. SSH into server
+3. Pull changes and restart application
 
 ## Support
-
-For issues:
-
+For issues or questions:
 1. Check application logs
 2. Verify Nginx configuration
-3. Ensure all services are running
-4. Check system resources
+3. Check system resources
+4. Review Google Maps console for API issues
 
-## File Locations
-
-Important file locations:
-
-- Node.js Application: `/home/fredp614/asphalt-app`
-- Nginx Config: `/etc/nginx/sites-available/asphalt.cloudstrucc.com`
-- SSL Certificates: `/etc/letsencrypt/live/asphalt.cloudstrucc.com/`
-- Application Logs: `journalctl -u asphalt`
-- Nginx Logs: `/var/log/nginx/`
-
-## Additional Notes
-
-- Keep backup copies of important configuration files
-- Regularly update SSL certificates
-- Monitor server resources
-- Keep the GitHub repository up to date
-- Maintain regular backups of the website content
+## License
+All rights reserved - McGuire Asphalt 2024
