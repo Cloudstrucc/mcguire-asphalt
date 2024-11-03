@@ -126,7 +126,6 @@ sudo journalctl -u asphalt -f
 
 After deployment, your files will be organized as follows:
 
-```
 /home/fredp614/asphalt-app/
 ├── app.js
 ├── package.json
@@ -136,7 +135,6 @@ After deployment, your files will be organized as follows:
     ├── index.html
     ├── assets/
     └── ...
-```
 
 ## Maintenance and Monitoring
 
