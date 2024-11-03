@@ -6,7 +6,7 @@
 set -e
 
 # Configuration
-APP_DIR="/var/www/asphalt"
+APP_DIR="/home/fredp614/asphalt-app"
 LOG_FILE="/var/log/asphalt-deploy.log"
 
 # Function to log messages

@@ -199,7 +199,7 @@ ln -sf /etc/nginx/sites-available/asphalt.cloudstrucc.com /etc/nginx/sites-enabl
 print_status "Cleaning up..."
 rm -rf $TEMP_DIR
 
-# Test and reload Nginx
+# Test and reload Nginx test
 print_status "Reloading Nginx..."
 nginx -t && systemctl reload nginx
 

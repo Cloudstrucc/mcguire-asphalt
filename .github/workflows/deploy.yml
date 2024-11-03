@@ -28,22 +28,4 @@ jobs:
 
       - name: Deploy to server
         run: |
-          ssh fredp614@${{ secrets.SERVER_IP }} << 'EOF'
-            # Navigate to app directory
-            cd /home/fredp614/asphalt-app
-
-            # Pull latest changes
-            git pull origin main
-
-            # Install dependencies if needed
-            npm install --production
-
-            # Restart the application
-            sudo systemctl restart asphalt
-
-            # Test Nginx config and reload if needed
-            sudo nginx -t && sudo systemctl reload nginx
-
-            # Clear any temporary files
-            sudo rm -rf /tmp/mcguire-asphalt
-          EOF
+          ssh fredp614@${{ secrets.SERVER_IP }} "bash /var/www/asphalt/scripts/deploy.sh"
