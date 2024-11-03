@@ -29,4 +29,4 @@ jobs:
 
       - name: Deploy to server
         run: |
-          ssh fredp614@${{ secrets.SERVER_IP }} "bash /home/fredp614/asphalt/scripts/deploy.sh"
+          ssh fredp614@${{ secrets.SERVER_IP }} "bash /home/fredp614/asphalt-app/scripts/deploy.sh"
