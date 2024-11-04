@@ -862,7 +862,7 @@ font-weight: 700;
   
   /* Ensure navbar has sufficient height */
   .navbar {
-    min-height: 100px; /* Adjust based on your logo size */
+    min-height: 50px; /* Adjust based on your logo size */
   }
   
   /* Mobile responsive adjustments */
