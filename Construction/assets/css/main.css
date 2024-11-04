@@ -842,14 +842,14 @@ font-weight: 700;
   /* Navbar logo container styles */
   .navbar-brand {
     height: auto;
-    /* padding: 10px 10px; */
+    padding: 5px 5px;
     display: flex;
     align-items: center;
   }
   
   /* Logo image styles */
   .navbar-brand img {
-    max-height: 135px; /* Adjust this value to match your desired height */
+    max-height: 115px; /* Adjust this value to match your desired height */
     width: auto;
     object-fit: contain;
     transition: all 0.3s ease;
@@ -862,13 +862,13 @@ font-weight: 700;
   
   /* Ensure navbar has sufficient height */
   .navbar {
-    min-height: 135px; /* Adjust based on your logo size */
+    min-height: 100px; /* Adjust based on your logo size */
   }
   
   /* Mobile responsive adjustments */
   @media (max-width: 768px) {
     .navbar-brand img {
-      max-height: 135px;
+      max-height: 115px;
     }
     
     .navbar {
