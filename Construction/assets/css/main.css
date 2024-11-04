@@ -868,7 +868,7 @@ font-weight: 700;
   /* Mobile responsive adjustments */
   @media (max-width: 768px) {
     .navbar-brand img {
-      max-height: 80px;
+      max-height: 110px;
     }
     
     .navbar {
