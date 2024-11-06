@@ -1,8 +1,9 @@
 # McGuire Asphalt Website
 
-A professional Node.js Express application for an asphalt paving company website, featuring Google Maps integration and automated deployment.
+A professional Node.js Express application for an asphalt paving company website, featuring Google Maps integration and automated deployment. test
 
 ## Project Structure
+
 ```
 /var/www/app/               # Main application directory
 ├── app.js                  # Express application
@@ -27,6 +28,7 @@ A professional Node.js Express application for an asphalt paving company website
 ## Initial Server Setup
 
 ### 1. Create Application Directory
+
 ```bash
 # Create standard application directory
 sudo mkdir -p /var/www/app
@@ -36,6 +38,7 @@ sudo chmod -R 755 /var/www/app
 ```
 
 ### 2. Install Dependencies
+
 ```bash
 # Update system
 sudo apt-get update
@@ -50,6 +53,7 @@ sudo apt-get install -y nginx
 ```
 
 ### 3. Configure Nginx
+
 ```bash
 # Create Nginx configuration
 sudo nano /etc/nginx/sites-available/mywebsite.conf
@@ -64,11 +68,12 @@ sudo systemctl reload nginx
 ```
 
 Example Nginx configuration:
+
 ```nginx
 server {
     listen 80;
     server_name yourdomain.com;
-    
+  
     location / {
         proxy_pass http://localhost:3000;
         proxy_http_version 1.1;
@@ -83,6 +88,7 @@ server {
 ## Application Setup
 
 ### 1. Clone Repository
+
 ```bash
 cd /var/www/app
 git clone https://github.com/your-repo/asphalt-website.git .
@@ -90,6 +96,7 @@ npm install --omit=dev
 ```
 
 ### 2. Set Up User Service
+
 ```bash
 # Create user service directory
 mkdir -p ~/.config/systemd/user/
@@ -99,6 +106,7 @@ nano ~/.config/systemd/user/webapp.service
 ```
 
 Service file content:
+
 ```ini
 [Unit]
 Description=Asphalt Website
@@ -118,6 +126,7 @@ WantedBy=default.target
 ```
 
 Enable the service:
+
 ```bash
 systemctl --user enable webapp
 systemctl --user start webapp
@@ -127,13 +136,14 @@ sudo loginctl enable-linger webapp
 ### 3. Google Maps Integration
 
 1. Get Google Maps API key:
+
    - Visit Google Cloud Console
    - Create new project
    - Enable Maps JavaScript API
    - Create API key
    - Add domain restrictions
-
 2. Update your API key in index.html:
+
 ```html
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
@@ -143,6 +153,7 @@ sudo loginctl enable-linger webapp
 ## Automated Deployment Setup
 
 ### 1. Create Deployment Script
+
 ```bash
 # Create deployment script
 sudo mkdir -p /var/www/app/scripts
@@ -151,6 +162,7 @@ sudo chmod 755 /var/www/app/scripts/deploy.sh
 ```
 
 Deploy script content:
+
 ```bash
 #!/bin/bash
 
@@ -179,22 +191,25 @@ log_message "Deployment completed"
 ### 2. GitHub Actions Setup
 
 1. Generate deployment SSH key:
+
 ```bash
 ssh-keygen -t ed25519 -C "deploy@yourdomain.com" -f ~/deploy-key
 ```
 
 2. Add to GitHub:
+
    - Add public key to repository Deploy Keys
    - Add private key to repository Secrets as `DEPLOY_KEY`
    - Add server IP to Secrets as `SERVER_IP`
-
 3. Create GitHub Actions workflow:
+
 ```bash
 mkdir -p .github/workflows
 nano .github/workflows/deploy.yml
 ```
 
 Workflow content:
+
 ```yaml
 name: Deploy to Production
 
@@ -230,17 +245,22 @@ jobs:
 ## Development
 
 ### Local Development
+
 1. Clone repository
 2. Install dependencies:
+
 ```bash
 npm install
 ```
+
 3. Start development server:
+
 ```bash
 npm run dev
 ```
 
 ### Making Updates
+
 1. Make changes locally
 2. Commit and push to main branch
 3. GitHub Actions will automatically deploy
@@ -248,11 +268,13 @@ npm run dev
 ## Maintenance
 
 ### Logs
+
 - Application logs: `journalctl --user -u webapp`
 - Deployment logs: `/var/log/webapp-deploy.log`
 - Nginx logs: `/var/log/nginx/access.log` and `error.log`
 
 ### Common Commands
+
 ```bash
 # Check application status
 systemctl --user status webapp
@@ -268,6 +290,7 @@ sudo nginx -t
 ```
 
 ### SSL Certificate (Optional)
+
 ```bash
 sudo apt-get install certbot python3-certbot-nginx
 sudo certbot --nginx -d yourdomain.com
@@ -276,6 +299,7 @@ sudo certbot --nginx -d yourdomain.com
 ## Troubleshooting
 
 ### Permission Issues
+
 ```bash
 # Check ownership
 ls -la /var/www/app
@@ -286,17 +310,21 @@ sudo chmod -R 755 /var/www/app
 ```
 
 ### Deployment Issues
+
 1. Check deploy logs:
+
 ```bash
 cat /var/log/webapp-deploy.log
 ```
 
 2. Verify SSH key setup:
+
 ```bash
 ssh -i deploy-key -T git@github.com
 ```
 
 ### Service Issues
+
 ```bash
 # Check service status
 systemctl --user status webapp
@@ -317,10 +345,12 @@ journalctl --user -u webapp -f
 ## Support
 
 For issues or questions:
+
 1. Check application logs
 2. Verify Nginx configuration
 3. Check system resources
 4. Review Google Maps console for API issues
 
 ## License
+
 All rights reserved - Your Company Name 2024
