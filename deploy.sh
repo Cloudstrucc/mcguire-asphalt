@@ -25,7 +25,7 @@ chmod 755 /home/fredp614/deploy.sh
 log_message "Pulling latest changes"
 git pull origin main
 
-# Install dependencies
+# Install dependencies test
 log_message "Installing dependencies"
 npm install --omit=dev
 
